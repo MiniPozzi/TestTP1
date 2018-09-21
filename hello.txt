@@ -1,1 +1,10 @@
+<<<<<<< HEAD
 Hey j'ai modifié cette ligne !
+=======
+Comment ça va Michel ?
+
+
+
+
+Hunk lache cette Waffle !!
+>>>>>>> remi
