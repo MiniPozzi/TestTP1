@@ -1,0 +1,62 @@
+add_library(imlib
+    dprint.cpp
+    dprint.h
+    event.h
+    filesel.cpp
+    filesel.h
+    filter.cpp
+    filter.h
+    fonts.cpp
+    fonts.h
+    guistat.cpp
+    guistat.h
+    image.cpp
+    image.h
+    include.cpp
+    include.h
+    input.cpp
+    input.h
+    jdir.h
+    jrand.cpp
+    jrand.h
+    jwindow.cpp
+    jwindow.h
+    keys.cpp
+    keys.h
+    linked.cpp
+    linked.h
+    mouse.h
+    palette.cpp
+    palette.h
+    pcxread.cpp
+    pcxread.h
+    pmenu.cpp
+    pmenu.h
+    scroller.cpp
+    scroller.h
+    specs.cpp
+    specs.h
+    sprite.cpp
+    sprite.h
+    status.cpp
+    status.h
+    supmorph.cpp
+    supmorph.h
+    timing.h
+    tools.cpp
+    tools.h
+    transimage.cpp
+    transimage.h
+    video.cpp
+    video.h
+    visobj.h
+)
+
+target_include_directories(imlib
+    PUBLIC
+        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
+)
+
+target_link_libraries(imlib
+    abuselib
+)

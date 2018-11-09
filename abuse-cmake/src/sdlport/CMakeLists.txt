@@ -1,0 +1,29 @@
+add_library(sdlportlib
+    event.cpp
+    hmi.cpp
+    hmi.h
+    jdir.cpp
+    joy.h
+    joystick.cpp
+    mouse.cpp
+    setup.cpp
+    setup.h
+    sound.cpp
+    sound.h
+    timing.cpp
+    video.cpp
+    )
+
+target_compile_definitions(sdlportlib 
+    PUBLIC
+        ASSETDIR="${ASSETS_DIR}"
+)
+
+target_link_libraries(sdlportlib
+    PUBLIC
+        libexternal_sdl
+        libexternal_sdl_mixer
+    PRIVATE
+        abuselib
+        imlib
+)
