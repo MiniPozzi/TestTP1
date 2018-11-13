@@ -425,3 +425,46 @@ TEST_CASE("Vecteur4 -operations de base vectorielle")
     //TEST sur taille
     //REQUIRE(cast4D.size() == 4;     // A Tester
 }
+
+TEST_CASE("MATRICE4 Operator")
+{
+    Mat4<int> matrice1();
+    Mat4<int> matrice2(2);
+    vec4i vecteur5(4,4,4,4);
+    Mat4<int> matrice3(vecteur5,vecteur5,vecteur5,vecteur5);
+    vec4i vecteur1(3);
+    vec4i vecteur2(4,5,6,7);
+    vec4i vecteur3(3);
+    vec4i vecteur4(4,5,6,7);
+    
+    Mat4<int> matriceOp(vecteur1,vecteur2,vecteur3,vecteur4);
+    REQUIRE(matriceOp[0] == vecteur1);
+    REQUIRE(matrice3[0][0] == 4);
+    REQUIRE(matrice3[0] == matrice3.v[0]);
+    REQUIRE((matrice3+matriceOp)[0][0] == 7);
+    REQUIRE((matrice3-matriceOp)[0][0] == 1);
+    Mat4<int> test = matrice3*matriceOp;
+    REQUIRE(test.v[0][0] == 48);
+
+    REQUIRE((matrice3 *= matriceOp)[0][0] == 48 );
+    REQUIRE((matrice3 += matriceOp)[0][0] == 51);
+    REQUIRE((matrice3 -= matriceOp)[1][1] == 88); 
+}
+
+TEST_CASE("FUNCTION MATRICE 4")
+{
+    vec4i vecteur1(3,3,-5,3);
+    vec4i vecteur2(4,5,6,7);
+    vec4i vecteur3(3,8,-8,3);
+    vec4i vecteur4(4,7,6,7);
+    mat4 matrice1(vecteur1,vecteur2,vecteur3,vecteur4);
+    REQUIRE(matrice1.det() == 54);
+    REQUIRE((matrice1.invert())[0][0] == 74.0f/27.0f);
+    REQUIRE(matrice1.ortho(0,0,3,4,5,6)[0][0] == 0.0f);
+    REQUIRE(matrice1.frustum(0,0,2,3,0,0)[2][1] == 5.0f);
+    REQUIRE(matrice1.perspective(1,2,1,3,2)[2][3] == -1.0f);
+    REQUIRE(matrice1.translate(5,10,4)[3][1] == 10);
+    REQUIRE(matrice1.rotate(1,2,3,0)[2][2] == (cosf(1)));
+    REQUIRE_NOTHROW(matrice1.printf());
+
+} 
