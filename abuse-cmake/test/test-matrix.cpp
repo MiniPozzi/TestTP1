@@ -18,7 +18,7 @@ TEST_CASE("Vecteur2 -operations de base vectorielle")
 {
     vec2i vecteur1(3);
     vec2i vecteur2(4,5);
-    vect3i vecteur3(10,11,12);      //Necessaire pour tester le cast en 2D
+    vec3i vecteur3(10,11,12);      //Necessaire pour tester le cast en 2D
 
     int scalaire = 2;
 
@@ -36,7 +36,8 @@ TEST_CASE("Vecteur2 -operations de base vectorielle")
     vec2i prodScalaire  = vecteur2 * scalaire;
     vec2i divScalaire  = vecteur2 / scalaire;
 
-    vec2i cast2D = CAST_OP(vecteur3, 2);
+    vec2i cast2D = (vec2i)vecteur3;
+    vec4i cast4D = (vec4i)vecteur3;
 
 // TEST VECTOR_OP
 
@@ -126,8 +127,19 @@ TEST_CASE("Vecteur2 -operations de base vectorielle")
     REQUIRE(cast2D.x == 10);
     REQUIRE(cast2D.y == 11);
 
+    /*REQUIRE(cast4D.x == 10);
+    REQUIRE(cast4D.y == 11);
+    REQUIRE(cast4D.z == 12);
+    REQUIRE(cast4D.w == 2);??????????????????????????????????????????????????????????????????????????????????????*/
+
+    //TEST sur racine valeur de sqlen (somme des carré des coordonnées du vecteur)
+    REQUIRE(cast2D.sqlen() == (10*10+11*11));
+
+    //TEST sur racine de lenql
+    REQUIRE(cast2D.len() == (float)(sqrt(10*10+11*11))); 
+
     //TEST sur taille
-    REQUIRE(cast2D.size() == 2;     // A Tester
+    REQUIRE(cast2D == vecteur3);     // Cast auto
 }
 
 TEST_CASE("Vecteur3 -operations de base vectorielle")
@@ -151,7 +163,8 @@ TEST_CASE("Vecteur3 -operations de base vectorielle")
     vec3i prodScalaire  = vecteur2 * scalaire;
     vec3i divScalaire  = vecteur2 / scalaire;
 
-    vec3i cast3D = CAST_OP(vecteur3, 3);
+    vec3i cast3D = (vec3i)vecteur3;
+    vec2i cast2D = (vec2i)vecteur3;
 
 // TEST VECTOR_OP
 
@@ -254,14 +267,23 @@ TEST_CASE("Vecteur3 -operations de base vectorielle")
     REQUIRE(cast3D.y == 11);
     REQUIRE(cast3D.z == 12);
 
+    REQUIRE(cast2D.x == 10);
+    REQUIRE(cast2D.y == 11);
+
+    //TEST sur racine valeur de sqlen (somme des carré des coordonnées du vecteur)
+    REQUIRE(cast3D.sqlen() == (10*10+11*11+12*12));
+
+    //TEST sur racine de lenql
+    REQUIRE(cast3D.len() == (float)sqrt(10*10+11*11+12*12));     
+
     //TEST sur taille
-    REQUIRE(cast3D.size() == 3;     // A Tester
+    REQUIRE(cast3D == vecteur3);     // Cast auto
 }
 TEST_CASE("Vecteur4 -operations de base vectorielle")
 {
     vec4i vecteur1(3);
     vec4i vecteur2(4,5,6,7);
-    vec5i vecteur3(10,11,12,13,14);
+    //vector<int> vecteur3(5,10,11,12,13,14);
     int scalaire = 2;
 
     vec4i add = vecteur1 + vecteur2;
@@ -278,7 +300,7 @@ TEST_CASE("Vecteur4 -operations de base vectorielle")
     vec4i prodScalaire  = vecteur2 * scalaire;
     vec4i divScalaire  = vecteur2 / scalaire;
 
-    vec4i cast4D = CAST_OP(vecteur3, 4);
+    //vec4i cast4D = (vec4i)vecteur3;
 
 // TEST VECTOR_OP
 
@@ -389,11 +411,17 @@ TEST_CASE("Vecteur4 -operations de base vectorielle")
 // TEST CAST_OP
 
     //TEST sur contenu
-    REQUIRE(cast4D.x == 10);
+    /*REQUIRE(cast4D.x == 10);
     REQUIRE(cast4D.y == 11);
     REQUIRE(cast4D.z == 12);
-    REQUIRE(cast4D.w == 13);
+    REQUIRE(cast4D.w == 13);*/
+
+    //TEST sur racine valeur de sqlen (somme des carré des coordonnées du vecteur)
+    //REQUIRE(cast4D.sqlen() == 534);
+
+    //TEST sur racine de lenql
+    //REQUIRE(cast4D.len() == 23.10844f);     // A Tester
 
     //TEST sur taille
-    REQUIRE(cast4D.size() == 4;     // A Tester
+    //REQUIRE(cast4D.size() == 4;     // A Tester
 }
