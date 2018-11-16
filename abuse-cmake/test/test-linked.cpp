@@ -24,22 +24,15 @@ TEST_CASE("Noeud")
     // suppression des noeuds
     delete(link1);
     delete(link2);
-    //REQUIRE(link1 == nullptr);
-    //REQUIRE(link2 == nullptr);
 }
 
-TEST_CASE("Liste de noeuds")
+TEST_CASE("Liste de noeuds ajouts au début et à la fin de la liste")
 {
     linked_list * list = new linked_list();
-    linked_list * list2 = new linked_list();
     linked_node * link1 = new linked_node();
     linked_node * link2 = new linked_node();
     linked_node * link3 = new linked_node();
     linked_node * link4 = new linked_node();
-    linked_node * link5 = new linked_node();
-
-    linked_node * link6 = new linked_node();
-    linked_node * link7 = new linked_node();
 
     // à l'initialisation de la liste list
     REQUIRE(list->Count() == 0);
@@ -57,6 +50,8 @@ TEST_CASE("Liste de noeuds")
     REQUIRE(list->first() == link2);
     REQUIRE(list->prev() == link1);
     REQUIRE((list->first())->Next() == link1);
+    REQUIRE((list->prev())->Next() == link2);
+    REQUIRE((list->first())->Next()->Prev() == link2);
 
     // ajout du noeud link3 au début
     list->add_front(link3);
@@ -65,6 +60,8 @@ TEST_CASE("Liste de noeuds")
     REQUIRE(list->prev() == link1);
     REQUIRE((list->first())->Prev() == link1);
     REQUIRE((list->first())->Next() == link2);
+    REQUIRE((list->prev())->Next() == link3);
+    REQUIRE((list->first())->Next()->Prev() == link3);
 
     // ajout du noeud link4 à la fin
     list->add_end(link4);
@@ -72,6 +69,26 @@ TEST_CASE("Liste de noeuds")
     REQUIRE(list->first() == link3);
     REQUIRE(list->prev() == link4);
     REQUIRE((list->first())->Next() == link2);
+    REQUIRE((list->prev())->Next() == link3);
+    REQUIRE((list->first())->Next()->Prev() == link3);
+
+     delete(list); // les noeuds de la liste sont détruits dans le destructeur de la liste
+}
+
+TEST_CASE("Liste de noeuds suppressions de noeud dans la liste")
+{
+    linked_list * list = new linked_list();
+    linked_node * link1 = new linked_node();
+    linked_node * link2 = new linked_node();
+    linked_node * link3 = new linked_node();
+    linked_node * link4 = new linked_node();
+    linked_node * link5 = new linked_node();
+
+    // ajout des noeuds dans la liste
+    list->add_front(link1);
+    list->add_front(link2);
+    list->add_front(link3);
+    list->add_end(link4);
 
     // suppression du noeud link5, ne faisant pas parti de la liste
     REQUIRE(list->unlink(link5) == 0); 
@@ -82,29 +99,63 @@ TEST_CASE("Liste de noeuds")
     REQUIRE(list->first() == link2);
     REQUIRE(list->prev() == link4);
     REQUIRE((list->first())->Next() == link1);
+    REQUIRE((list->prev())->Next() == link2);
+    REQUIRE((list->first())->Next()->Prev() == link2);
 
     // suppression du noeud link4, juste avant le noeud du début
     REQUIRE(list->unlink(link4) == 1);
     REQUIRE(list->Count() == 2);
     REQUIRE(list->first() == link2);
     REQUIRE(list->prev() == link1);
+    REQUIRE((list->prev())->Next() == link2);
+    REQUIRE((list->first())->Next()->Prev() == link2);
 
     // suppression du noeud link1, juste après le noeud de début
-    // il ne reste ainsi qu'un noeud qui doit boucler sur lui-même
+        // il ne reste ainsi qu'un noeud qui doit boucler sur lui-même
     REQUIRE(list->unlink(link1) == 1);
     REQUIRE(list->Count() == 1);
     REQUIRE(list->first() == link2);
     REQUIRE(list->prev() == link2);
     REQUIRE((list->first())->Next() == link2);
+    REQUIRE((list->prev())->Next() == link2);
+    REQUIRE((list->first())->Next()->Prev() == link2);
 
     // suppression du dernier noeud link2
     REQUIRE(list->unlink(link2) == 1);
     REQUIRE(list->Count() == 0);
     REQUIRE(list->first() == nullptr);
-   // REQUIRE(list->prev() == nullptr);                     // IL MANQUE UNE EXCEPTION
-
+    // Lorsque la liste est vide, il faudrait lever une exception quand on appel la fonction prev(),
+        // puisque il retourne m_first->Prev(), qui n'existe plus, ou alors retourner nullptr
+    //REQUIRE_THROWS(list->prev());
+    
     // suppression quand il n'y pas de neud
     REQUIRE(list->unlink(link1) == 0);
+
+    delete(list); // les noeuds de la liste sont détruits dans le destructeur de la liste
+    delete(link5);
+}
+
+TEST_CASE("Liste de noeuds, destructeur de la liste")
+{
+    linked_list * list = new linked_list();
+    linked_node * link1 = new linked_node();
+    linked_node * link2 = new linked_node();
+
+    // ajout de noeuds
+    list->add_front(link1);
+    list->add_front(link2);
+
+    delete(list); // les noeuds de la liste sont détruits dans le destructeur de la liste
+    REQUIRE(list->Count() == 0);
+    // list2->first devrait être égale à nullptr !! Cependant, list2->first() retourne une adresse
+    //REQUIRE(list2->first() == nullptr);
+}
+
+TEST_CASE("Liste de noeuds, ajouter une deuxièmer fois un même noeud")
+{
+    linked_list * list = new linked_list();
+    linked_node * link1 = new linked_node();
+    linked_node * link2 = new linked_node();
 
     // ajout du noeud link1 au début
     list->add_front(link1);
@@ -119,8 +170,8 @@ TEST_CASE("Liste de noeuds")
     REQUIRE(list->prev() == link1);
     REQUIRE((list->first())->Next() == link1);
 
-    // ajout du noeud link1 au début
-    // il manque une exeption ici, puisque quand on ajoute un noeud qui existe déjà, l'intégrité de la liste n'est pas préservé
+    // ajout d'un noeud déjà dans la liste à son début : link1
+        // il manque une exeption ici, puisque quand on ajoute un noeud qui existe déjà, l'intégrité de la liste n'est pas préservée actuellement
     list->add_front(link1);
     REQUIRE(list->Count() == 3);
     REQUIRE(list->first() == link1);
@@ -128,21 +179,4 @@ TEST_CASE("Liste de noeuds")
     REQUIRE((list->first())->Next() == link1);
 
     delete(list);
-
-    // ajout du noeud link6 au début
-    list2->add_front(link6);
-    REQUIRE(list2->Count() == 1);
-    REQUIRE(list2->first() == link6);
-    REQUIRE(list2->prev() == link6);
-
-    // ajout du noeud link2 au début
-    list2->add_front(link7);
-    REQUIRE(list2->Count() == 2);
-    REQUIRE(list2->first() == link7);
-    REQUIRE(list2->prev() == link6);
-    REQUIRE((list2->first())->Next() == link6);
-
-    delete(list2);
-    REQUIRE(list2->Count() == 0);
-    //REQUIRE(list2->first() == nullptr);                   // ERREUR, list2->first devrait être égale à nullptr !!, et c'est encore un objet
 }
