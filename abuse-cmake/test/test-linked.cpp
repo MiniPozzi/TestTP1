@@ -26,7 +26,7 @@ TEST_CASE("Noeud")
     delete(link2);
 }
 
-TEST_CASE("Liste de noeuds ajouts au début et à la fin de la liste")
+TEST_CASE("Liste de noeuds, ajouts au début et à la fin de la liste")
 {
     linked_list * list = new linked_list();
     linked_node * link1 = new linked_node();
@@ -75,7 +75,7 @@ TEST_CASE("Liste de noeuds ajouts au début et à la fin de la liste")
      delete(list); // les noeuds de la liste sont détruits dans le destructeur de la liste
 }
 
-TEST_CASE("Liste de noeuds suppressions de noeud dans la liste")
+TEST_CASE("Liste de noeuds, suppressions de noeud dans la liste")
 {
     linked_list * list = new linked_list();
     linked_node * link1 = new linked_node();
@@ -151,7 +151,7 @@ TEST_CASE("Liste de noeuds, destructeur de la liste")
     //REQUIRE(list2->first() == nullptr);
 }
 
-TEST_CASE("Liste de noeuds, ajouter une deuxièmer fois un même noeud")
+TEST_CASE("Liste de noeuds, ajouter une deuxième fois un même noeud")
 {
     linked_list * list = new linked_list();
     linked_node * link1 = new linked_node();
@@ -178,5 +178,6 @@ TEST_CASE("Liste de noeuds, ajouter une deuxièmer fois un même noeud")
     REQUIRE(list->prev() == link1);
     REQUIRE((list->first())->Next() == link1);
 
-    delete(list);
+    delete(list); // les noeuds de la liste sont détruits dans le destructeur de la liste
+    delete(link2);
 }
